@@ -1,0 +1,14 @@
+#! /bin/sh
+
+sxhkd &
+
+bspc config border_width 1
+bspc config focused_border_color '#607D8B'
+
+bspc config split_ratio 0.60
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+bspc config focus_follows_pointer true
+bspc monitor -d 1 2 3 4 5
+python3 -u ~/.scripts/lemon.py | lemonbar -B '#212121' -g 1366x26 &
+sed 's/XOFF/10/' ~/.conky | conky -dqc - &

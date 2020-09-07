@@ -1,0 +1,55 @@
+# x: xinit, window manager and status bar
+# shell: basic shell aliases and environment variables
+# shell-extra: extra shell configs that are more personalized
+# scripts: globally useful scripts
+# scripts-mod: scripts that modify options of the platform e.g. the volume
+# scripts-daemon: scripts that run in the background and should be run by cron
+# config: config files for misc programs
+
+laptop=laptop,x,shell,shell-extra,scripts,scripts-mod,scripts-daemon,config
+desktop=desktop,x,shell,shell-extra,scripts,scripts-mod,scripts-daemon,config
+
+# x
+.config/polybar/config:x
+.wallpaper.jpg:x
+.xinitrc:x
+.config/sxhkd/sxhkdrc:x
+.config/user-dirs.dirs:x
+.conky.lua:x
+
+.config/compton.conf:laptop
+.config/compton.conf:desktop
+
+.config/bspwm/bspwmrc:laptop
+.config/bspwm/bspwmrc:desktop
+
+.conky:laptop
+.conky_dual:laptop
+.conky:desktop
+
+# shell, shell-extra
+.bashrc:shell
+.bash_profile:shell
+.bash_extra:shell-extra
+
+.bash_local:laptop
+
+# scripts, scripts-mod, scripts-daemon
+.scripts/auto-mount.sh:scripts
+.scripts/make.sh:scripts
+.scripts/get_installed.sh:scripts
+
+.scripts/vol_change.sh:scripts-mod
+
+.scripts/notify.sh:scripts-daemon
+.scripts/ud_check.sh:scripts-daemon
+
+.scripts/br_change.sh:laptop
+.scripts/bat_check.sh:laptop
+.scripts/bat_eta.py:laptop
+
+# config
+.vimrc:config
+.gitconfig:config
+.config/termite/config:config
+.Xresources:config

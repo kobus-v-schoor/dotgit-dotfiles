@@ -1,0 +1,19 @@
+#! /bin/bash
+
+export MAKEFLAGS='-j9'
+
+alias ub_wifi='sudo rfkill unblock wifi'
+alias eth='sudo netctl start eth'
+alias mnt_hdfs='sudo mount -t nfs -o vers=3,proto=tcp,nolock,noacl,sync localhost:/ '
+alias slp='sleep 1h && sudo create_ap --stop wlp2s0 && poweroff'
+alias budget='~/repos/budget/main'
+alias wol='wakeonlan -i hbox.duckdns.org 94:de:80:ef:23:06'
+
+export ctn="syslog ldap kerberos nfs zabbix mta"
+
+function nfs() {
+	for i in $ctn; do
+		lxc config set $i security.privileged true
+		lxc config set $i raw.lxc lxc.apparmor.profile=unconfined
+	done
+}

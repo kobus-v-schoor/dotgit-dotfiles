@@ -1,0 +1,6 @@
+[options]
+font = Roboto Mono 9
+cursor_shape = underline
+
+[colors]
+background = #232323

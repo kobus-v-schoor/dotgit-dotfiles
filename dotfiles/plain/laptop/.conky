@@ -1,0 +1,24 @@
+conky.config = {
+	alignment = 'bottom_right',
+	gap_x = XOFF,
+	gap_y = 0,
+
+	font = 'Terminus:size=9',
+	use_xft = true,
+	draw_shades = false,
+
+	double_buffer = true,
+	own_window = true,
+	own_window_type = 'desktop',
+
+	own_window_transparent = true,
+
+	update_interval = 60
+}
+
+conky.text = [[
+${execpi 60 ~/.scripts/conky_cal.sh}
+${color white}${execi 600 gcalcli --calendar General --calendar Assignments --calendar Contacts --calendar Work --conky --nocolor agenda $(date -d "today" +%FT%H:%M) $(date -d "1 week" +%F)}${color}
+${hr}
+${execi 600 gcalcli --calendar General --calendar Assignments --calendar Contacts --calendar Work --conky --nocolor agenda $(date -d "1 week" +%F) $(date -d "6 week" +%F)}
+]]

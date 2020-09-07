@@ -1,0 +1,235 @@
+[colors]
+background = #212121
+background-alt = #37474f
+foreground = #ffffff
+foreground-alt = #424242
+urgent = #ef5350
+
+clock = #FFCC80
+battery = #8bc34a
+wlan = #607d8b
+eth = #FF5722
+volume = #80DEEA
+mail = #e57373
+updates = #B39DDB
+
+notify-info-foreground = #212121
+notify-info-background = #009688
+
+notify-alert-foreground = #212121
+notify-alert-background = #FFC107
+
+notify-urgent-foreground = #212121
+notify-urgent-background = #f44336
+
+[bar/status]
+font-0 = xos4 Terminus:pixelsize=9;2
+font-1 = Material Icons:pixelsize=10;4
+
+module-margin-left = 1
+module-margin-right = 1
+padding-left = 1
+padding-right = 1
+radius = 4
+
+modules-center = notify-info notify-alert notify-urgent
+fixed-center = true
+
+background = ${colors.background}
+
+enable-ipc = true
+
+[bar/status-laptop]
+inherit = bar/status
+
+monitor = ${env:MONITOR:eDP-1}
+
+modules-left = bspwm-multi
+modules-right = updates mail backlight volume eth wlan battery bat_rem clock
+
+width = 1356
+offset-y = 5
+offset-x = 5
+
+[bar/status-desktop]
+inherit = bar/status
+
+monitor = ${env:MONITOR:DVI-I-0}
+
+modules-left = bspwm-multi
+modules-right = temperature updates mail volume clock
+
+width = 1590
+offset-y = 5
+offset-x = 5
+
+[bar/status-tt-desktop]
+inherit = bar/status-desktop
+
+monitor = ${env:MONITOR:DVI-I-1}
+
+width = 1430
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %index%
+label-focused-padding = 1
+label-focused-background = ${colors.background-alt}
+
+label-occupied = %index%
+label-occupied-padding = 1
+
+label-empty = %index%
+label-empty-padding = 1
+label-empty-foreground = ${colors.foreground-alt}
+
+label-urgent = %index%
+label-urgent-padding = 1
+label-urgent-background = ${colors.urgent}
+
+[module/bspwm-multi]
+inherit = module/bspwm
+
+pin-workspaces = false
+label-focused = %name%
+
+[module/clock]
+type = internal/date
+interval = 1
+
+date = %Y/%m/%d
+time = %H:%M:%S
+
+format = <label>
+format-foreground = ${colors.clock}
+label =  %date%  %time%
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+
+format-charging = <label-charging>
+format-discharging = <label-discharging>
+format-full = <label-full>
+
+time-format = %H:%M
+
+label-charging =  %percentage%% %time%
+label-discharging =  %percentage%%
+label-full =  %percentage%%
+
+format-charging-foreground = ${colors.battery}
+format-discharging-foreground = ${colors.battery}
+format-full-foreground = ${colors.battery}
+
+[module/wlan]
+type = internal/network
+interface = wlp2s0
+interval = 1
+
+format-connected = <label-connected>
+format-connected-foreground = ${colors.wlan}
+label-connected =  %essid%
+format-disconnected =
+
+[module/eth]
+type = internal/network
+interface = enp1s0
+interval = 1
+
+format-connected = <label-connected>
+format-connected-foreground = ${colors.eth}
+label-connected = 
+format-disconnected =
+
+[module/volume]
+type = internal/volume
+
+format-volume = <ramp-volume> <label-volume>
+format-volume-foreground = ${colors.volume}
+label-volume = %percentage%%
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+
+format-muted-foreground = ${colors.volume}
+label-muted = 
+
+[module/backlight]
+type = internal/backlight
+card = intel_backlight
+
+format = <ramp> <label>
+label = %percentage%%
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+[module/mail]
+type = custom/script
+exec-if = [ `cat ~/.gmail` != 0 ]
+exec = cat ~/.gmail
+format-foreground = ${colors.mail}
+label =  %output%
+interval = 30
+
+[module/updates]
+type = custom/script
+exec-if = [ -s ~/.updates ]
+exec = wc -l ~/.updates | sed 's/\ .*//g'
+format-foreground = ${colors.updates}
+label =  %output%
+interval = 30
+
+[module/bat_rem]
+type = custom/script
+exec-if = [ -f /tmp/bat_rem ]
+exec = cat /tmp/bat_rem
+format-foreground = ${colors.battery}
+label = %output%
+interval = 60
+
+[module/notify-info]
+type = custom/ipc
+
+hook-0 = echo ""
+hook-1 = echo "  New mail has arrived  "
+hook-2 = echo "  New updates available  "
+
+format-foreground = ${colors.notify-info-foreground}
+format-background = ${colors.notify-info-background}
+
+[module/notify-alert]
+type = custom/ipc
+
+hook-0 = echo ""
+hook-1 = echo "  Battery is low  "
+
+format-foreground = ${colors.notify-alert-foreground}
+format-background = ${colors.notify-alert-background}
+
+[module/notify-urgent]
+type = custom/ipc
+
+hook-0 = echo ""
+hook-1 = echo "  Battery is critically low  "
+
+format-foreground = ${colors.notify-urgent-foreground}
+format-background = ${colors.notify-urgent-background}
+
+[module/temperature]
+type = internal/temperature
+warn-temperature = 80
+
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input
+
+internal = 0.5
+
+label =  %temperature%
+label-warn =  %temperature%
+
+label-foreground = #78909C
+label-warn-foreground = #f44336

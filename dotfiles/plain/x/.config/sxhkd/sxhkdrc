@@ -1,0 +1,104 @@
+## Launchers {{{
+# Terminal
+alt + Return
+	urxvt
+
+# Dmenu
+alt + space
+	dmenu_run -fn "Terminus:size=9"
+
+# Web browser
+alt + {backslash, bracketright}
+	chromium-browser {_, mail.google.com}
+
+# Spice client
+alt + apostrophe
+	spicy
+
+
+# }}}
+
+## bspwm {{{
+
+# xhkd reload
+alt + shift + s
+	pkill -USR1 -x sxhkd
+
+# Focus/swap node in direction
+alt + {_, shift} + {h, j, k, l}
+	bspc node -{f,s} {west,south,north,east}
+
+# Focus desktop
+alt + {1-5}
+	bspc desktop focused:^{1-5} -f
+
+# Focus monitors
+alt + {comma, period}
+	bspc monitor -f {^1,^2}
+
+# Previous node/desktop
+# alt + {Tab,grave}
+# 	bspc {desktop, node} -s last
+
+# Move node to desktop
+alt + shift + {1-5}
+	bspc node -d focused:^{1-5}
+
+# Move node to monitor
+alt + shift + {comma, period}
+	bspc node -m {^1,^2}
+
+# Preselect in direction
+super + {h, j, k, l}
+	bspc node -p {west,south,north,east}
+
+# Close/kill node
+alt + {_,shift} + w
+	bspc node -{c,k}
+
+# Expand in direction
+alt + {Left, Right, Up, Down}
+	bspc node @{west -r -20,east -r +20,north -r -20,south -r +20}
+
+# Contract in direction
+shift + alt + {Left, Right, Up, Down}
+	bspc node @{east -r -20,west -r +20,south -r -20,north -r +20}
+
+# Balance node sizes in direction
+super + {Left, Right, Up, Down}
+	bspc node @{west,east,north,south} -B
+
+# Make window sticky
+alt + s
+	bspc node -g sticky
+
+super + !button{1-3}
+    bspc pointer -g {move,resize_side,resize_corner}
+# }}}
+
+## Hotkeys {{{
+# Audio related
+{XF86AudioRaiseVolume, XF86AudioLowerVolume}
+	~/.scripts/vol_change.sh {raise,lower}
+
+XF86AudioMute
+	amixer set Master toggle
+
+{XF86MonBrightnessUp, XF86MonBrightnessDown}
+	~/.scripts/br_change.sh {+,-}
+
+Scroll_Lock
+	$HOME/.scripts/headphones
+
+# Misc
+ctrl + {_,shift} backslash
+	sleep 0.3; xset dpms force off; {_,slock}
+
+Pause
+	systemctl suspend
+
+XF86Display
+	bspc quit
+
+# }}}
+#

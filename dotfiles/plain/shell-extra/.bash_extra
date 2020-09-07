@@ -1,0 +1,80 @@
+#! /bin/bash
+
+export LIBVIRT_DEFAULT_URI=qemu:///system
+export PATH="$PATH:$HOME/.scripts:$HOME/repos/dotgit/bin"
+export QT_STYLE_OVERRIDE=gtk
+
+alias sts='git status'
+alias dff='git diff'
+alias cmt='git commit -am '
+alias sth='git stash'
+alias stha='git stash apply'
+alias gadd='git add'
+
+alias ddff='dotgit diff'
+alias gen='dotgit generate'
+
+alias progress='watch -n 1 grep -e Dirty: -e Writeback: /proc/meminfo'
+alias xclip='xclip -selection clipboard'
+
+alias mnt='~/.scripts/auto-mount.sh mount'
+alias umnt='~/.scripts/auto-mount.sh unmount'
+alias ks='ls ~/usb/'
+alias ud='sudo true && packer-aur -Syu && sudo -E pacdiff && cp /dev/null ~/.updates'
+alias wt='cat ~/.updates'
+
+alias dpms_off='xset s off; xset -dpms'
+
+alias up='cd ~/.openvpn/up; sudo openvpn up.ovpn; cd -'
+alias cluster='cd ~/.openvpn/cluster; sudo openvpn client.ovpn; cd -'
+
+alias wolh='wol -p 23 -i cssh.duckdns.org 00:14:2a:d4:1e:30'
+# alias tunnel='ssh -D 8000 kssh.duckdns.org -N'
+alias ca='~/.scripts/create_ap.sh'
+
+alias snap='sudo lvcreate -sl 100%FREE -n root-snap laptop-vg/root'
+alias snap_del='sudo lvremove laptop-vg/root-snap'
+
+function venv {
+	for d in .venv venv .env env; do
+		if [ -d $d ]; then
+			source $d/bin/activate
+			break
+		fi
+	done
+}
+
+function tunnel {
+	ssh -D 8000 kssh.duckdns.org -N &
+	chromium-browser -proxy-server="socks5://localhost:8000" "www.netflix.com" \
+		--user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)Chrome/69.0.3497.81 Safari/537.36"
+	kill %1
+}
+
+function netflix {
+	chromium-browser "www.netflix.com" \
+		--user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)Chrome/69.0.3497.81 Safari/537.36"
+}
+
+function container {
+	xhost +local:
+	lxc start $1
+	lxc exec $1 -- sudo -u ubuntu --login ${@:2}
+}
+
+
+alias mng='python ./manage.py'
+alias steam='container steam /usr/games/steam'
+alias steam-win='container steam-win ./start-steam.sh'
+alias xyzware='container da-vinci ./start_xyzware.sh'
+alias kicad='container kicad kicad'
+alias quartus='lxc start altera; ssh -Y root@lxc.quartus /opt/intelFPGA_lite/18.0/quartus/bin/quartus'
+alias mt4='lxc start mt; ssh -X lxc.mt ./start-mt4.sh'
+alias mt5='lxc start mt; ssh -X lxc.mt ./start-mt5.sh'
+alias fumount='fusermount -u'
+alias jn='venv && jupyter notebook'
+alias installed="comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)"
+alias pubkey='cat ~/.ssh/id_rsa.pub | xclip'
+
+alias csweb="sshfs lxc.csweb:repos/cs-web $HOME/repos/cs-web"
+alias fitchfork="sshfs lxc.fitchfork:repos/fitchfork-ng $HOME/repos/fitchfork"
